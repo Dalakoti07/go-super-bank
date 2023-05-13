@@ -95,25 +95,55 @@ func (store *Store) TransferTx(ctx context.Context, arg TransferTxParams) (Trans
 		}
 
 		// update balance
-		// account1 -> update its balance
-		result.FromAccount, err = queries.AddAccountBalance(ctx, AddAccountBalanceParams{
-			ID:     arg.FromAccountID,
-			Amount: -arg.Amount,
-		})
-		if err != nil {
-			return err
+		if arg.FromAccountID < arg.ToAccountId {
+			result.FromAccount, result.ToAccount, err = addMoney(
+				ctx,
+				queries,
+				arg.FromAccountID,
+				-arg.Amount,
+				arg.ToAccountId,
+				arg.Amount,
+			)
+		} else {
+			// get account2 -> update its balance
+			result.ToAccount, result.FromAccount, err = addMoney(
+				ctx,
+				queries,
+				arg.ToAccountId,
+				arg.Amount,
+				arg.FromAccountID,
+				-arg.Amount,
+			)
 		}
-
-		// get account2 -> update its balance
-		result.ToAccount, err = queries.AddAccountBalance(ctx, AddAccountBalanceParams{
-			ID:     arg.ToAccountId,
-			Amount: arg.Amount,
-		})
-		if err != nil {
-			return err
-		}
-
 		return nil
 	})
 	return result, err
+}
+
+// addMoney adds amount1 to accountId1 and amount2 to amountId2
+// and returns updated account1 and account2 and error
+func addMoney(
+	ctx context.Context,
+	q *Queries,
+	accountId1 int64,
+	amount1 int64,
+	accountId2 int64,
+	amount2 int64,
+) (account1 Account, account2 Account, err error) {
+	account1, err = q.AddAccountBalance(
+		ctx,
+		AddAccountBalanceParams{
+			ID:     accountId1,
+			Amount: amount1,
+		})
+	if err != nil {
+		// a cool feature of golang if return types are named they are automatically returned
+		return
+	}
+	account2, err = q.AddAccountBalance(
+		ctx, AddAccountBalanceParams{
+			ID:     accountId2,
+			Amount: amount2,
+		})
+	return
 }
