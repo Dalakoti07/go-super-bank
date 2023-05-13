@@ -10,6 +10,7 @@ A banking system
   - make tests
   - make migrateup
   - make migratedown
+- github actions for CI 
 
 **Refer to branch deadlock to read more about the problem**
 
