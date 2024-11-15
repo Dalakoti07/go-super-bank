@@ -2,6 +2,7 @@ package db
 
 import (
 	"database/sql"
+	"fmt"
 	_ "github.com/lib/pq"
 	"log"
 	"os"
@@ -19,12 +20,13 @@ func TestMain(m *testing.M) {
 		log.Fatal("cannot load config:", err)
 	}
 
-	testDB, err := sql.Open(config.DBDriver, config.DBSource)
+	fmt.Printf("config %v and %v \n", config.DBDriver, config.DBSource)
+	testDb, err = sql.Open(config.DBDriver, config.DBSource)
 
 	if err != nil {
 		log.Fatal("cannot connect to DB: ", err)
 	}
-	testQueries = New(testDB)
+	testQueries = New(testDb)
 
 	os.Exit(m.Run())
 }
