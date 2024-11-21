@@ -23,5 +23,6 @@ Actual Repository is [here](https://github.com/techschool/simplebank)
 # Todos
 -[ ] mock db, so that we can test controllers as well
 -[ ] add swagger
+-[ ] add authentication and authorization
 
 
