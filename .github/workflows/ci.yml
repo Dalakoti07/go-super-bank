@@ -1,4 +1,4 @@
-name: ci-test
+name: run tests
 
 on:
   push:

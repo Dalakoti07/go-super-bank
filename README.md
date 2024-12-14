@@ -16,3 +16,13 @@ A banking system
 
 Actual Repository is [here](https://github.com/techschool/simplebank)
 
+# Commands
+- start postgres docker image `docker start postgres_be_god`
+- 
+
+# Todos
+-[ ] mock db, so that we can test controllers as well
+-[ ] add swagger
+-[ ] add authentication and authorization
+
+
