@@ -3,8 +3,8 @@ FROM golang:1.20-alpine AS builder
 WORKDIR /app
 COPY . .
 RUN go build -o main main.go
-RUN apk add curl
-RUN curl -L https://github.com/golang-migrate/migrate/releases/download/v4.15.2/migrate.linux-amd64.tar.gz | tar xvz
+RUN apk add --no-cache  curl
+RUN curl -L https://github.com/golang-migrate/migrate/releases/download/v4.15.2/migrate.linux-amd64.tar.gz | tar -xz -C /app
 
 # Run stage
 FROM alpine
